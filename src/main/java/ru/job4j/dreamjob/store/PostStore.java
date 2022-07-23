@@ -32,4 +32,16 @@ public class PostStore {
     public Collection<Post> findAll() {
         return posts.values();
     }
+
+    /**
+     * ищет свободный id, устанавливает его для post и добавляет post в posts
+     */
+    public void add(Post post) {
+        int id = post.getId();
+        while (posts.containsKey(id)) {
+            id++;
+        }
+        post.setId(id);
+        posts.put(id, post);
+    }
 }
