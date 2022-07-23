@@ -49,7 +49,7 @@
                 <td th:text="${post.id}" />
                 <td th:text="${post.name}" />
                 <td th:text="${post.description}" />
-                <td th:text="${#calendars.format(post.created)}" />
+                <td th:text="${#temporals.format(post.created)}" />
             </tr>
             </tbody>
         </table>
