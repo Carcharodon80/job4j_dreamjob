@@ -49,7 +49,7 @@
                 <td th:text="${candidate.id}" />
                 <td th:text="${candidate.name}" />
                 <td th:text="${candidate.desc}" />
-                <td th:text="${#calendars.format(candidate.created)}" />
+                <td th:text="${#temporals.format(candidate.created)}" />
             </tr>
             </tbody>
         </table>
