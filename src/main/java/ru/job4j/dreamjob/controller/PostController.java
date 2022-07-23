@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostStore;
 
-import java.time.LocalDateTime;
-
 @Controller
 public class PostController {
     private final PostStore store = PostStore.instOf();
