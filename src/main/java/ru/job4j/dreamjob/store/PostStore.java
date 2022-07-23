@@ -44,4 +44,12 @@ public class PostStore {
         post.setId(id);
         posts.put(id, post);
     }
+
+    public Post findById(int id) {
+        return posts.get(id);
+    }
+
+    public void update(Post post) {
+        posts.replace(post.getId(), post);
+    }
 }
