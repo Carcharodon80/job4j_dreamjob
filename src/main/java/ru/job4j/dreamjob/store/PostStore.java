@@ -7,14 +7,15 @@ import java.time.Month;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * PostStore - синглтон (приватный контструктор)
+ * PostStore - синглтон (приватный конструктор)
  */
 public class PostStore {
     private static final PostStore INST = new PostStore();
-
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
+    private final AtomicInteger id = new AtomicInteger(0);
 
     private PostStore() {
         posts.put(1, new Post(1, "Junior Java Job", "Junior",
@@ -34,15 +35,14 @@ public class PostStore {
     }
 
     /**
-     * ищет свободный id, устанавливает его для post и добавляет post в posts
+     * проверяет id (если такой есть в posts - увеличивает на 1), устанавливает его для post и добавляет post в posts
      */
     public void add(Post post) {
-        int id = post.getId();
-        while (posts.containsKey(id)) {
-            id++;
+        while (posts.containsKey(id.intValue())) {
+            id.incrementAndGet();
         }
-        post.setId(id);
-        posts.put(id, post);
+        post.setId(id.intValue());
+        posts.put(post.getId(), post);
     }
 
     public Post findById(int id) {
