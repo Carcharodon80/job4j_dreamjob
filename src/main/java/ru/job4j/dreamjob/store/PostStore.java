@@ -35,7 +35,7 @@ public class PostStore {
     }
 
     /**
-     * проверяет id (если такой есть в posts - увеличивает на 1), устанавливает его для post и добавляет post в posts
+     * устанавливает id для post и добавляет post в posts, затем id++
      */
     public void add(Post post) {
         post.setId(id.intValue());

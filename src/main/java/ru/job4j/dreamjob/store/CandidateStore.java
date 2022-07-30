@@ -15,9 +15,9 @@ public class CandidateStore {
     private final AtomicInteger id = new AtomicInteger(0);
 
     private CandidateStore() {
-        candidates.put(1, new Candidate(1, "Junior", "John Smith",
+        this.add(new Candidate(1, "Junior", "John Smith",
                 LocalDateTime.of(2021, Month.DECEMBER, 23, 15, 45)));
-        candidates.put(2, new Candidate(2, "Senior", "Jane Dow",
+        this.add(new Candidate(2, "Senior", "Jane Dow",
                 LocalDateTime.of(2020, Month.JANUARY, 1, 5, 4)));
     }
 
@@ -30,11 +30,9 @@ public class CandidateStore {
     }
 
     public void add(Candidate candidate) {
-        while (candidates.containsKey(id.intValue())) {
-            id.incrementAndGet();
-        }
         candidate.setId(id.intValue());
         candidates.put(candidate.getId(), candidate);
+        id.incrementAndGet();
     }
 
     public Candidate findById(int id) {
