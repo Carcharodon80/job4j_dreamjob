@@ -46,6 +46,7 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Дата создания</th>
+                <th scope="col">Опубликовано</th>
             </tr>
             </thead>
             <tbody>
@@ -56,9 +57,15 @@
                         <i class="fa fa-edit"></i>
                     </a>
                     <span th:text="${post.name}"></span>
-                </td>
+
                 <td th:text="${post.description}"/>
                 <td th:text="${#temporals.format(post.created)}"/>
+                <td th:if="${post.visible}">
+                    <i class="fa fa-check-square-o"></i>
+                </td>
+                <td th:if="${!post.visible}">
+                    <i class="fa fa-square-o"></i>
+                </td>
             </tr>
             </tbody>
         </table>
