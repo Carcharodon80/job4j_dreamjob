@@ -34,9 +34,8 @@ public class PostStore {
      * устанавливает id для post и добавляет post в posts, затем id++
      */
     public void add(Post post) {
-        post.setId(id.intValue());
+        post.setId(id.incrementAndGet());
         posts.put(post.getId(), post);
-        id.incrementAndGet();
     }
 
     public Post findById(int id) {
