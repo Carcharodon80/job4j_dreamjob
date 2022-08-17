@@ -40,13 +40,17 @@
                 Новая вакансия.
             </div>
             <div class="card-body">
-                <form th:action="@{/createCandidate}" method="POST">
+                <form th:action="@{/createCandidate}" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="0"/>
                     <div class="form-group">
                         <label for="name">Имя</label>
                         <input type="text" class="form-control" name="name" id="name">
-                        <input type="hidden" name="id" value="0"/>
                         <label for="name">Описание</label>
                         <input type="text" class="form-control" name="description" id="description">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Фотография</label>
+                        <input type="file" class="form-control" name="file" id="file">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
