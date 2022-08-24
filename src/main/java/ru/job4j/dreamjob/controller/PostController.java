@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
@@ -55,8 +56,15 @@ public class PostController {
         return "updatePost";
     }
 
+    /**
+     * Выпадающий список (тэг select на форме) может передать только id, по этому id создаем город и
+     * обновляем в списке вакансий
+     */
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
+        int idCity = post.getCity().getId();
+        City updCity = cityService.findById(idCity);
+        post.setCity(updCity);
         postService.update(post);
         return "redirect:/posts";
     }
