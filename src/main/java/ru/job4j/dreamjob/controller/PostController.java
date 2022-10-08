@@ -41,9 +41,13 @@ public class PostController {
 
     /**
      * ModelAttribute - показывает, что надо собрать post из полученных данных
+     * Выпадающий список (тэг select на форме) может передать только id,
+     * по этому id находим город и добавляем его в post
      */
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post) {
+        City city = cityService.findById(post.getCity().getId());
+        post.setCity(city);
         post.setCreated(LocalDateTime.now());
         postService.add(post);
         return "redirect:/posts";
@@ -57,14 +61,13 @@ public class PostController {
     }
 
     /**
-     * Выпадающий список (тэг select на форме) может передать только id, по этому id создаем город и
-     * обновляем в списке вакансий
+     * Выпадающий список (тэг select на форме) может передать только id,
+     * по этому id находим город и обновляем в списке вакансий
      */
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
-        int idCity = post.getCity().getId();
-        City updCity = cityService.findById(idCity);
-        post.setCity(updCity);
+        City city = cityService.findById(post.getCity().getId());
+        post.setCity(city);
         postService.update(post);
         return "redirect:/posts";
     }

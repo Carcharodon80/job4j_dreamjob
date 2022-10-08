@@ -2,34 +2,43 @@ package ru.job4j.dreamjob.service;
 
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
+import ru.job4j.dreamjob.store.PostDBStore;
 import ru.job4j.dreamjob.store.PostStore;
 
 import java.util.Collection;
+import java.util.List;
 
 @ThreadSafe
 @Service
 public class PostService {
-    private final PostStore postStore;
+    private final PostDBStore store;
+    private final CityService cityService;
 
-    public PostService(PostStore postStore) {
-        this.postStore = postStore;
+    public PostService(PostDBStore store) {
+        this.store = store;
+        cityService = new CityService();
     }
 
     public Collection<Post> findAll() {
-        return postStore.findAll();
+        List<Post> posts = store.findAll();
+        posts.forEach(post -> post.setCity(
+                cityService.findById(post.getCity().getId())
+        ));
+        return posts;
     }
 
     public void add(Post post) {
-        postStore.add(post);
+        store.add(post);
     }
 
     public Post findById(int id) {
-        return postStore.findById(id);
+        return store.findById(id);
     }
 
     public void update(Post post) {
-        postStore.update(post);
+        store.update(post);
     }
 
 }
