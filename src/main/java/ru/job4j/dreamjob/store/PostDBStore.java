@@ -3,43 +3,37 @@ package ru.job4j.dreamjob.store;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
-import ru.job4j.dreamjob.service.CityService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class PostDBStore {
     private final BasicDataSource pool;
-    private final CityService cityService;
     private static final Logger LOG = LogManager.getLogger(PostDBStore.class.getName());
+    private static final String FINDALLPOSTS = "SELECT * FROM post ORDER BY id";
+    private static final String INSERTPOST = "INSERT INTO post(name, city_id, description, date, visible) "
+            + "VALUES (?, ?, ?, ?, ?)";
+    private static final String UPDATEPOST = "UPDATE post SET (name, city_id, description, visible) = (?, ?, ?, ?)"
+            + "WHERE id = ?";
+    private static final String SELECTPOST = "SELECT * FROM post WHERE id = ?";
 
     public PostDBStore(BasicDataSource pool) {
         this.pool = pool;
-        this.cityService = new CityService();
     }
 
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post ORDER BY id")
+             PreparedStatement ps = cn.prepareStatement(FINDALLPOSTS)
         ) {
             try (ResultSet it = ps.executeQuery()) {
-                Post tempPost;
                 while (it.next()) {
-                    tempPost = new Post(it.getInt("id"), it.getString("name"));
-                    tempPost.setCity(cityService.findById(it.getInt("city_id")));
-                    tempPost.setDescription(it.getString("description"));
-                    tempPost.setCreated(it.getTimestamp("date").toLocalDateTime());
-                    tempPost.setVisible(it.getBoolean("visible"));
-                    posts.add(tempPost);
+                    posts.add(createPost(it));
                 }
             }
         } catch (Exception e) {
@@ -50,10 +44,7 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     "INSERT INTO post(name, city_id, description, date, visible) "
-                             + "VALUES (?, ?, ?, ?, ?)",
-                     PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps = cn.prepareStatement(INSERTPOST, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
             ps.setInt(2, post.getCity().getId());
@@ -74,9 +65,7 @@ public class PostDBStore {
 
     public Post update(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     "UPDATE post SET (name, city_id, description, visible) = (?, ?, ?, ?)"
-                             + "WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(UPDATEPOST)
         ) {
             ps.setString(1, post.getName());
             ps.setInt(2, post.getCity().getId());
@@ -91,23 +80,28 @@ public class PostDBStore {
     }
 
     public Post findById(int id) {
+        Post post = null;
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(SELECTPOST)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Post(it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("date").toLocalDateTime(),
-                            it.getBoolean("visible"),
-                            cityService.findById(it.getInt("city_id")));
+                    post = createPost(it);
                 }
             }
         } catch (Exception e) {
             LOG.error("Exception: ", e);
         }
-        return null;
+        return post;
+    }
+
+    private Post createPost(ResultSet it) throws SQLException {
+        Post post = new Post(it.getInt("id"), it.getString("name"));
+        post.setDescription(it.getString("description"));
+        post.setCreated(it.getTimestamp("date").toLocalDateTime());
+        post.setVisible(it.getBoolean("visible"));
+        post.setCity(new City(it.getInt("city_id"), ""));
+        return post;
     }
 }
