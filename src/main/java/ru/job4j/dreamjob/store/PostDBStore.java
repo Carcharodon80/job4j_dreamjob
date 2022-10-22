@@ -15,12 +15,12 @@ import java.util.List;
 public class PostDBStore {
     private final BasicDataSource pool;
     private static final Logger LOG = LogManager.getLogger(PostDBStore.class.getName());
-    private static final String FINDALLPOSTS = "SELECT * FROM post ORDER BY id";
-    private static final String INSERTPOST = "INSERT INTO post(name, city_id, description, date, visible) "
+    private static final String FIND_ALL_POSTS = "SELECT * FROM post ORDER BY id";
+    private static final String INSERT_POST = "INSERT INTO post(name, city_id, description, date, visible) "
             + "VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATEPOST = "UPDATE post SET (name, city_id, description, visible) = (?, ?, ?, ?)"
+    private static final String UPDATE_POST = "UPDATE post SET (name, city_id, description, visible) = (?, ?, ?, ?)"
             + "WHERE id = ?";
-    private static final String SELECTPOST = "SELECT * FROM post WHERE id = ?";
+    private static final String SELECT_POST = "SELECT * FROM post WHERE id = ?";
 
     public PostDBStore(BasicDataSource pool) {
         this.pool = pool;
@@ -29,7 +29,7 @@ public class PostDBStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(FINDALLPOSTS)
+             PreparedStatement ps = cn.prepareStatement(FIND_ALL_POSTS)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -44,7 +44,7 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(INSERTPOST, PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps = cn.prepareStatement(INSERT_POST, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
             ps.setInt(2, post.getCity().getId());
@@ -65,7 +65,7 @@ public class PostDBStore {
 
     public Post update(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(UPDATEPOST)
+             PreparedStatement ps = cn.prepareStatement(UPDATE_POST)
         ) {
             ps.setString(1, post.getName());
             ps.setInt(2, post.getCity().getId());
@@ -82,7 +82,7 @@ public class PostDBStore {
     public Post findById(int id) {
         Post post = null;
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(SELECTPOST)
+             PreparedStatement ps = cn.prepareStatement(SELECT_POST)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
