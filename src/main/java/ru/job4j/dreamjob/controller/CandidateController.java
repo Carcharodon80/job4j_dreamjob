@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.store.CandidateStore;
+import ru.job4j.dreamjob.store.CandidateDBStore;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 @ThreadSafe
 @Controller
 public class CandidateController {
-    private final CandidateStore candidateStore;
+    private final CandidateDBStore candidateStore;
 
-    public CandidateController(CandidateStore candidateStore) {
+    public CandidateController(CandidateDBStore candidateStore) {
         this.candidateStore = candidateStore;
     }
 
