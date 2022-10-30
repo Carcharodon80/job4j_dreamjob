@@ -13,6 +13,4 @@
     <include file="scripts/update_003.sql" relativeToChangelogFile="true"/>
     <include file="scripts/update_004.sql" relativeToChangelogFile="true"/>
     <include file="scripts/update_005.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/update_006.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/update_007.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

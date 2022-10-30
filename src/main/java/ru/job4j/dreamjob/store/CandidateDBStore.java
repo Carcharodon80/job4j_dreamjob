@@ -47,7 +47,7 @@ public class CandidateDBStore {
             ps.setString(2, candidate.getDescription());
             ps.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
             ps.setBytes(4, candidate.getPhoto());
-            ps.execute();
+            ps.executeUpdate();
         } catch (Exception e) {
             LOG.error("Exception: ", e);
         }
@@ -70,7 +70,8 @@ public class CandidateDBStore {
         return candidate;
     }
 
-    public Candidate update(Candidate candidate) {
+    public boolean update(Candidate candidate) {
+        boolean result = false;
         try (Connection cn = pool.getConnection();
         PreparedStatement ps = cn.prepareStatement(UPDATE_CANDIDATE)) {
             ps.setString(1, candidate.getName());
@@ -78,11 +79,12 @@ public class CandidateDBStore {
             ps.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
             ps.setBytes(4, candidate.getPhoto());
             ps.setInt(5, candidate.getId());
-            ps.execute();
+            ps.executeUpdate();
+            result = true;
         } catch (Exception e) {
             LOG.error("Exception: ", e);
         }
-        return candidate;
+        return result;
     }
 
     private Candidate createCandidate(ResultSet it) throws SQLException {
