@@ -28,7 +28,7 @@ class PostDBStoreTest {
     }
 
     /**
-     * Если не очистить store, то посты в БД накапливаются, и findAll() не работает
+     * Если не очистить store, то посты в БД накапливаются, и findAll() не проходит
      */
     @BeforeEach
     public void clearStore() {
