@@ -48,6 +48,11 @@ public class CandidateDBStore {
             ps.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
             ps.setBytes(4, candidate.getPhoto());
             ps.executeUpdate();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    candidate.setId(id.getInt(1));
+                }
+            }
         } catch (Exception e) {
             LOG.error("Exception: ", e);
         }
