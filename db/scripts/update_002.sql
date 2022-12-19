@@ -1,2 +1,2 @@
-ALTER TABLE post ADD city_id int;
+ALTER TABLE post ADD IF NOT EXISTS city_id int;
 

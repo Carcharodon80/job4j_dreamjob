@@ -1,2 +1,2 @@
-ALTER TABLE post ADD date timestamp;
-ALTER TABLE post ADD visible boolean;
+ALTER TABLE post ADD IF NOT EXISTS date timestamp;
+ALTER TABLE post ADD IF NOT EXISTS visible boolean;

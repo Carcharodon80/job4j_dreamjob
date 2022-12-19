@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Название документа</title>
+    <style>
+        #okno {
+            width: 300px;
+            height: 50px;
+            text-align: center;
+            padding: 15px;
+            border: 3px solid #0000cc;
+            border-radius: 10px;
+            color: #0000cc;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+<a th:href="@{/formAddUser}">
+    <div id="okno">
+        <p th:text="${message}">mes</p>
+    </div>
+</a>
+</body>
+</html>

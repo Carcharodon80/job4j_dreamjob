@@ -1,1 +1,1 @@
-ALTER TABLE post ADD description text;
+ALTER TABLE post ADD IF NOT EXISTS description text;
