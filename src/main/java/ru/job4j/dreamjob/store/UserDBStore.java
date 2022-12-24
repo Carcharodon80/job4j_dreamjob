@@ -27,7 +27,7 @@ public class UserDBStore {
         Optional<Integer> optional = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, user.getEmail());
+            ps.setString(1, user.getName());
             ps.setString(2, user.getPassword());
             optional = Optional.of(ps.executeUpdate());
             try (ResultSet id = ps.getGeneratedKeys()) {

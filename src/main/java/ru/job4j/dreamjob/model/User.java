@@ -4,12 +4,15 @@ import java.util.Objects;
 
 public class User {
     private int id;
-    private String email;
+    private String name;
     private String password;
 
-    public User(int id, String email) {
+    public User() {
+    }
+
+    public User(int id, String name) {
         this.id = id;
-        this.email = email;
+        this.name = name;
     }
 
     public int getId() {
@@ -20,12 +23,12 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
