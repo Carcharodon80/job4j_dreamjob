@@ -10,6 +10,7 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Optional;
 
 @Repository
 public class UserDBStore {
@@ -21,23 +22,21 @@ public class UserDBStore {
         this.pool = pool;
     }
 
-    public User add(User user) {
+    public Optional<Integer> add(User user) {
+        Optional<Integer> optional = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
-            ps.executeUpdate();
+            optional = Optional.of(ps.executeUpdate());
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
                     user.setId(id.getInt(1));
                 }
             }
-        } catch (PSQLException e) {
-            user = null;
-            LOG.error(e);
         } catch (Exception e) {
             LOG.error(e);
         }
-        return user;
+        return optional;
     }
 }

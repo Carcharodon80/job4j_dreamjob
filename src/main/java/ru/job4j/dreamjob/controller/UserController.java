@@ -28,7 +28,7 @@ public class UserController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute User user) {
-        Optional<User> regUser = Optional.ofNullable(userService.add(user));
+        Optional<Integer> regUser = userService.add(user);
         if (regUser.isEmpty()) {
             return "redirect:/fail";
         }
