@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 @ThreadSafe
 @Controller
 public class IndexController {
-
     @GetMapping("/index")
     public String index(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");

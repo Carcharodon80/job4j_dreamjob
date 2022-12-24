@@ -24,8 +24,10 @@ public class UserController {
     }
 
     @GetMapping("/loginPage")
-    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
+    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail,
+                            HttpSession session) {
         model.addAttribute("fail", fail != null);
+        model.addAttribute("user", getUserFromSession(session));
         return "login";
     }
 
@@ -45,12 +47,13 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/loginPage";
+        return "redirect:/index";
     }
 
     @GetMapping("/formAddUser")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User(0, "Заполните поле"));
+    public String addUser(Model model, HttpSession session) {
+        model.addAttribute("user", getUserFromSession(session));
+        model.addAttribute("newUser", new User(0, ""));
         return "addUser";
     }
 
@@ -73,5 +76,14 @@ public class UserController {
     public String addUserFail(Model model) {
         model.addAttribute("message", "Пользователь с такой почтой уже существует.");
         return "addUserResult";
+    }
+
+    private User getUserFromSession(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        return user;
     }
 }
