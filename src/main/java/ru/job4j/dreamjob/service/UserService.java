@@ -16,7 +16,7 @@ public class UserService {
         this.userDBStore = userDBStore;
     }
 
-    public Optional<Integer> add(User user) {
+    public Optional<User> add(User user) {
         return userDBStore.add(user);
     }
 

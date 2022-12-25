@@ -59,7 +59,7 @@ public class UserController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute User user) {
-        Optional<Integer> regUser = userService.add(user);
+        Optional<User> regUser = userService.add(user);
         if (regUser.isEmpty()) {
             return "redirect:/fail";
         }

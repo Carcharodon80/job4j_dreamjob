@@ -23,16 +23,17 @@ public class UserDBStore {
         this.pool = pool;
     }
 
-    public Optional<Integer> add(User user) {
-        Optional<Integer> optional = Optional.empty();
+    public Optional<User> add(User user) {
+        Optional<User> optional = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getPassword());
-            optional = Optional.of(ps.executeUpdate());
+            ps.executeUpdate();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
                     user.setId(id.getInt(1));
+                    optional = Optional.of(user);
                 }
             }
         } catch (Exception e) {
