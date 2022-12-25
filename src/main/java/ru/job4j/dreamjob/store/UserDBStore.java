@@ -37,7 +37,7 @@ public class UserDBStore {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         return optional;
     }
@@ -55,7 +55,7 @@ public class UserDBStore {
                 optional = Optional.of(user);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOG.error(e.getMessage(), e);
         }
         return optional;
     }

@@ -54,7 +54,7 @@ public class CandidateDBStore {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Exception: ", e);
+            LOG.error(e.getMessage(), e);
         }
         return candidate;
     }
@@ -70,7 +70,7 @@ public class CandidateDBStore {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Exception: ", e);
+            LOG.error(e.getMessage(), e);
         }
         return candidate;
     }
@@ -86,7 +86,7 @@ public class CandidateDBStore {
             ps.setInt(5, candidate.getId());
             result = ps.executeUpdate() > 0;
         } catch (Exception e) {
-            LOG.error("Exception: ", e);
+            LOG.error(e.getMessage(), e);
         }
         return result;
     }
