@@ -9,6 +9,11 @@ import java.io.IOException;
 
 @Component
 public class AuthFilter implements Filter {
+
+    /**
+     * Сервлетный фильтр, пропускает неавторизированного пользователя на все страницы, кроме
+     * "Добавить вакансию", "Добавить кандидата" и "Обновить вакансию", "Обновить кандидата"
+     */
     @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
@@ -16,7 +21,10 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
-        if (uri.endsWith("loginPage") || uri.endsWith("login")) {
+        if (uri.endsWith("loginPage") || uri.endsWith("login") || uri.endsWith("formAddUser")
+                || uri.endsWith("registration") || uri.endsWith("success") || uri.endsWith("fail")
+                || uri.endsWith("posts") || uri.endsWith("candidates") || uri.endsWith("index")
+                || uri.contains("photoCandidate")) {
             chain.doFilter(req, res);
             return;
         }
