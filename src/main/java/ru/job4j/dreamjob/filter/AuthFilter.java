@@ -6,12 +6,19 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 
 @Component
 public class AuthFilter implements Filter {
+    /**
+     * Неизменяемый набор валидных маппингов для фильтра
+     */
+    Set<String> mappings = Set.of("loginPage", "login", "formAddUser", "registration",
+            "success", "fail", "posts", "candidates", "index", "photoCandidate");
 
     /**
-     * Сервлетный фильтр, пропускает неавторизированного пользователя на все страницы, кроме
+     * Сервлетный фильтр, пропускает неавторизированного пользователя на все страницы,
+     * указанные в mappings (см. isValidMapping), туда не входят -
      * "Добавить вакансию", "Добавить кандидата" и "Обновить вакансию", "Обновить кандидата"
      */
     @Override
@@ -21,10 +28,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
-        if (uri.endsWith("loginPage") || uri.endsWith("login") || uri.endsWith("formAddUser")
-                || uri.endsWith("registration") || uri.endsWith("success") || uri.endsWith("fail")
-                || uri.endsWith("posts") || uri.endsWith("candidates") || uri.endsWith("index")
-                || uri.contains("photoCandidate")) {
+        if (isValidMapping(uri)) {
             chain.doFilter(req, res);
             return;
         }
@@ -33,5 +37,16 @@ public class AuthFilter implements Filter {
             return;
         }
         chain.doFilter(req, res);
+    }
+
+    private boolean isValidMapping(String uri) {
+        boolean result = false;
+        for (String validMapping : mappings) {
+            if (uri.endsWith(validMapping)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 }
