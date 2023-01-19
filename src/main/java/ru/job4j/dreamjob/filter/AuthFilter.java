@@ -13,7 +13,7 @@ public class AuthFilter implements Filter {
     /**
      * Неизменяемый набор валидных маппингов для фильтра
      */
-    Set<String> mappings = Set.of("loginPage", "login", "formAddUser", "registration",
+    private static final Set<String> MAPPINGS = Set.of("loginPage", "login", "formAddUser", "registration",
             "success", "fail", "posts", "candidates", "index", "photoCandidate");
 
     /**
@@ -40,13 +40,6 @@ public class AuthFilter implements Filter {
     }
 
     private boolean isValidMapping(String uri) {
-        boolean result = false;
-        for (String validMapping : mappings) {
-            if (uri.endsWith(validMapping)) {
-                result = true;
-                break;
-            }
-        }
-        return result;
+        return MAPPINGS.stream().anyMatch(uri::endsWith);
     }
 }
