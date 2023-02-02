@@ -60,7 +60,10 @@
                         <label for="name">Фотография</label>
                         <input type="file" class="form-control" name="file" id="file">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <div>
+                        <button class="btn btn-success" type="submit">Сохранить</button>
+                        <a class="btn btn-danger" th:href="@{/deleteCandidate/{id}(id=${candidate.id})}">Удалить</a>
+                    </div>
                 </form>
             </div>
         </div>

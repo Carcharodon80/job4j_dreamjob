@@ -70,12 +70,12 @@ public class UserController {
     @GetMapping("/success")
     public String addUserSuccess(Model model) {
         model.addAttribute("message", "Пользователь добавлен.");
-        return "addUserResult";
+        return "message";
     }
 
     @GetMapping("/fail")
     public String addUserFail(Model model) {
         model.addAttribute("message", "Пользователь с такой почтой уже существует.");
-        return "addUserResult";
+        return "message";
     }
 }

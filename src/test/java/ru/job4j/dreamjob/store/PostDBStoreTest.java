@@ -44,7 +44,7 @@ class PostDBStoreTest {
     @Test
     public void whenAddPost() {
         Post post = new Post(0, "Java Job", "Description", LocalDateTime.now(), true,
-                new City(0, "London"));
+                new City(0, "London"), 0);
         store.add(post);
         Post postInDb = store.findById(post.getId());
         assertEquals(postInDb.getName(), post.getName());
@@ -53,7 +53,7 @@ class PostDBStoreTest {
     @Test
     public void whenFindById() {
         Post post = new Post(0, "Java Job", "Description", LocalDateTime.now(), true,
-                new City(0, "London"));
+                new City(0, "London"), 0);
         store.add(post);
         Post postInDb = store.findById(post.getId());
         assertEquals(postInDb, post);
@@ -62,7 +62,7 @@ class PostDBStoreTest {
     @Test
     public void whenUpdate() {
         Post post = new Post(0, "Java Job", "Description", LocalDateTime.now(), true,
-                new City(0, "London"));
+                new City(0, "London"), 0);
         store.add(post);
         post.setName("New Java Job");
         store.update(post);
@@ -73,9 +73,9 @@ class PostDBStoreTest {
     @Test
     public void whenFindAll() {
         Post post = new Post(0, "Java Job", "Description", LocalDateTime.now(), true,
-                new City(0, "London"));
+                new City(0, "London"), 0);
         Post post2 = new Post(4, "Java Job4", "Description", LocalDateTime.now(), true,
-                new City(0, "London"));
+                new City(0, "London"), 0);
         List<Post> posts = Arrays.asList(post, post2);
         store.add(post);
         store.add(post2);

@@ -20,6 +20,7 @@ public class CandidateDBStore {
     private static final String SELECT_CANDIDATE = "SELECT * FROM candidates WHERE id = ?";
     private static final String UPDATE_CANDIDATE = "UPDATE candidates SET (name, description, date, photo)"
             + " = (?, ?, ?, ?) WHERE id = ?";
+    private static final String DELETE_CANDIDATE = "DELETE FROM candidates WHERE id = ?";
 
     public CandidateDBStore(BasicDataSource pool) {
         this.pool = pool;
@@ -89,6 +90,18 @@ public class CandidateDBStore {
             LOG.error(e.getMessage(), e);
         }
         return result;
+    }
+
+    public boolean delete(int id) {
+        boolean candidateIsDeleted = false;
+        try (Connection cn = pool.getConnection();
+        PreparedStatement ps = cn.prepareStatement(DELETE_CANDIDATE)) {
+            ps.setInt(1, id);
+            candidateIsDeleted = ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return candidateIsDeleted;
     }
 
     private Candidate createCandidate(ResultSet it) throws SQLException {

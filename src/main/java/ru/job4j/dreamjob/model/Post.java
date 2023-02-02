@@ -11,6 +11,7 @@ public class Post implements Serializable {
     private LocalDateTime created;
     private boolean visible;
     private City city;
+    private int fileId;
 
     public Post() {
     }
@@ -20,13 +21,15 @@ public class Post implements Serializable {
         this.name = name;
     }
 
-    public Post(int id, String name, String description, LocalDateTime created, boolean visible, City city) {
+    public Post(int id, String name, String description, LocalDateTime created,
+                boolean visible, City city, int fileId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
         this.visible = visible;
         this.city = city;
+        this.fileId = fileId;
     }
 
     public int getId() {
@@ -75,6 +78,14 @@ public class Post implements Serializable {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
     }
 
     @Override

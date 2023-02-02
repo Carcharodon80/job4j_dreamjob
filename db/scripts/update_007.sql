@@ -1,0 +1,1 @@
+ALTER TABLE post ADD IF NOT EXISTS file_id int;

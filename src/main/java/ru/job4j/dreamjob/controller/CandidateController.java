@@ -74,4 +74,18 @@ public class CandidateController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(new ByteArrayResource(candidate.getPhoto()));
     }
+
+    @GetMapping("/deleteCandidate/{id}")
+    public String deleteCandidate(@PathVariable int id) {
+        if (!candidateService.delete(id)) {
+            return "redirect:/candidateNotDeleted";
+        }
+        return "redirect:/candidates";
+    }
+
+    @GetMapping("/candidateNotDeleted")
+    private String deleteCandidateFail(Model model) {
+        model.addAttribute("message", "Кандидат с указанным идентификатором не найден.");
+        return "message";
+    }
 }

@@ -31,4 +31,8 @@ public class CandidateService {
     public void update(Candidate candidate) {
         candidateStore.update(candidate);
     }
+
+    public boolean delete(int id) {
+        return candidateStore.delete(id);
+    }
 }
